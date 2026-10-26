@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burger Blitz - Fast Food</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-900-normal.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --primary: #e63946;
+    --secondary: #ffb703;
+    --dark: #1d1d1d;
+    --light: #fff8e7;
+    --accent: #fb8500;
+    --shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    padding: 1.5rem 2rem;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: white;
+  }
+  
+  .logo-icon {
+    font-size: 2.5rem;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  .logo h1 {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+  }
+  
+  .logo p {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    padding: 0.4rem;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .tab-btn {
+    padding: 0.7rem 1.8rem;
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+  
+  .tab-btn:hover {
+    background: rgba(255,255,255,0.1);
+  }
+  
+  .tab-btn.active {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .cart-badge {
+    background: var(--secondary);
+    color: var(--dark);
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 0.15rem 0.5rem;
+    border-radius: 50px;
+    min-width: 22px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .cart-badge.bump {
+    animation: bump 0.3s ease;
+  }
+  
+  @keyframes bump {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+  
+  /* User button */
+  .user-btn {
+    padding: 0.6rem 1.2rem;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .user-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    background: var(--secondary);
+    color: var(--dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.8rem;
+  }
+  
+  /* Main */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  
+  .section-title h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+  
+  .section-title h2 span {
+    color: var(--primary);
+  }
+  
+  .section-title p {
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  /* Menu Grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+  }
+  
+  .food-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .food-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  }
+  
+  .food-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .food-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, var(--img-bg) 0%, transparent 70%);
+    opacity: 0.4;
+  }
+  
+  .food-image span {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s ease;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+  }
+  
+  .food-card:hover .food-image span {
+    transform: scale(1.15) rotate(-5deg);
+  }
+  
+  .food-tag {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--secondary);
+    color: var(--dark);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+  
+  .food-info {
+    padding: 1.5rem;
+  }
+  
+  .food-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  
+  .food-desc {
+    color: #777;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  .food-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .food-price {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary);
+  }
+  
+  .add-btn {
+    background: var(--dark);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .add-btn:hover {
+    background: var(--primary);
+    transform: scale(1.05);
+  }
+  
+  .add-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Cart */
+  .cart-container {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+  }
+  
+  .cart-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  
+  .cart-empty-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+  }
+  
+  .cart-empty h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+  }
+  
+  .cart-empty p {
+    color: #888;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    animation: slideIn 0.4s ease;
+  }
+  
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  
+  .cart-item-image {
+    width: 70px;
+    height: 70px;
+    background: var(--light);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+  }
+  
+  .cart-item-details {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .cart-item-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .cart-item-price {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  
+  .qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--light);
+    padding: 0.3rem;
+    border-radius: 50px;
+  }
+  
+  .qty-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--dark);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .qty-btn:hover {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .qty-value {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 700;
+  }
+  
+  .remove-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.3rem;
+    transition: color 0.2s ease;
+  }
+  
+  .remove-btn:hover {
+    color: var(--primary);
+  }
+  
+  .cart-summary {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed #eee;
+  }
+  
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+    color: #666;
+  }
+  
+  .summary-row.total {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .summary-row.total span:last-child {
+    color: var(--primary);
+  }
+  
+  .checkout-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(230, 57, 70, 0.3);
+  }
+  
+  .checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(230, 57, 70, 0.4);
+  }
+  
+  .checkout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--dark);
+    color: white;
+    padding: 0.9rem 1.8rem;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1001;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  /* Login Modal */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .login-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .login-modal {
+    background: white;
+    border-radius: 28px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2.5rem 2rem;
+    position: relative;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+  }
+  
+  .login-overlay.active .login-modal {
+    transform: scale(1) translateY(0);
+  }
+  
+  .login-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--dark);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-close:hover {
+    background: var(--primary);
+    color: white;
+    transform: rotate(90deg);
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 1.8rem;
+  }
+  
+  .login-logo {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    animation: bounce 2s infinite;
+  }
+  
+  .login-header h2 {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 0.3rem;
+  }
+  
+  .login-header h2 span {
+    color: var(--primary);
+  }
+  
+  .login-header p {
+    color: #777;
+    font-size: 0.9rem;
+  }
+  
+  .login-tabs {
+    display: flex;
+    background: var(--light);
+    padding: 0.3rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-tab {
+    flex: 1;
+    padding: 0.7rem;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #888;
+    cursor: pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+  
+  .login-tab.active {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+  
+  .input-wrapper {
+    position: relative;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--dark);
+    background: var(--light);
+    transition: all 0.2s ease;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    color: #555;
+  }
+  
+  .checkbox-wrapper input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+  
+  .forgot-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: opacity 0.2s;
+  }
+  
+  .forgot-link:hover {
+    opacity: 0.7;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    border: none;
+    padding: 0.95rem;
+    border-radius: 50px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(230, 57, 70, 0.3);
+    margin-bottom: 1.2rem;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(230, 57, 70, 0.4);
+  }
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.2rem 0;
+    color: #aaa;
+    font-size: 0.8rem;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #eee;
+  }
+  
+  .social-buttons {
+    display: flex;
+    gap: 0.6rem;
+  }
+  
+  .social-btn {
+    flex: 1;
+    padding: 0.7rem;
+    background: var(--light);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--dark);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+  
+  .social-btn:hover {
+    border-color: var(--primary);
+    background: white;
+    transform: translateY(-2px);
+  }
+  
+  .form-error {
+    background: #fee;
+    color: var(--primary);
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: none;
+    border-left: 3px solid var(--primary);
+  }
+  
+  .form-error.show {
+    display: block;
+    animation: shake 0.4s ease;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+  
+  .hidden { display: none !important; }
+  
+  @media (max-width: 600px) {
+    .logo h1 { font-size: 1.4rem; }
+    .tab-btn { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+    .section-title h2 { font-size: 1.8rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    .cart-container { padding: 1.2rem; }
+    .cart-item { flex-wrap: wrap; }
+    .login-modal { padding: 2rem 1.5rem; }
+    .user-btn span:not(.user-avatar) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <span class="logo-icon">🍔</span>
+      <div>
+        <h1>Burger Blitz</h1>
+        <p>Fast • Fresh • Furious</p>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="menu">
+        <span>📋</span> Menu
+      </button>
+      <button class="tab-btn" data-tab="cart">
+        <span>🛒</span> Cart
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="user-btn" id="userBtn">
+        <span class="user-avatar" id="userAvatar">👤</span>
+        <span id="userLabel">Sign In</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Menu Section -->
+  <section id="menuSection">
+    <div class="section-title">
+      <h2>Our <span>Menu</span></h2>
+      <p>Hand-crafted favorites, made with love</p>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <!-- Cart Section -->
+  <section id="cartSection" class="hidden">
+    <div class="section-title">
+      <h2>Your <span>Cart</span></h2>
+      <p>Review your delicious picks</p>
+    </div>
+    <div class="cart-container" id="cartContainer"></div>
+  </section>
+</main>
+
+<!-- Login Modal -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-modal">
+    <button class="login-close" id="loginClose">✕</button>
+    <div class="login-header">
+      <div class="login-logo">🍔</div>
+      <h2>Welcome <span>Back</span></h2>
+      <p id="loginSubtitle">Sign in to continue your feast</p>
+    </div>
+
+    <div class="login-tabs">
+      <button class="login-tab active" data-mode="login">Sign In</button>
+      <button class="login-tab" data-mode="signup">Sign Up</button>
+    </div>
+
+    <div class="form-error" id="formError"></div>
+
+    <form id="authForm">
+      <div class="form-group hidden" id="nameGroup">
+        <label class="form-label">Full Name</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input type="text" class="form-input" id="nameInput" placeholder="John Doe">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <div class="input-wrapper">
+          <span class="input-icon">✉️</span>
+          <input type="email" class="form-input" id="emailInput" placeholder="you@example.com" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input type="password" class="form-input" id="passwordInput" placeholder="••••••••" required>
+        </div>
+      </div>
+
+      <div class="form-row" id="rememberRow">
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="rememberMe" checked>
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="forgot-link" onclick="event.preventDefault(); showToast('Reset link sent to your email!');">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Sign In</button>
+    </form>
+
+    <div class="divider">or continue with</div>
+
+    <div class="social-buttons">
+      <button class="social-btn" onclick="socialLogin('Google')">
+        <span>🔵</span> Google
+      </button>
+      <button class="social-btn" onclick="socialLogin('Apple')">
+        <span>🍎</span> Apple
+      </button>
+      <button class="social-btn" onclick="socialLogin('Facebook')">
+        <span>📘</span> Facebook
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span>✓</span>
+  <span id="toastMsg">Added to cart</span>
+</div>
+
+<script>
+  const menuItems = [
+    { id: 1, name: 'Classic Smash Burger', desc: 'Juicy beef patty, melted cheddar, crisp lettuce, and our secret sauce.', price: 5.99, emoji: '🍔', tag: 'Bestseller', bg: '#ffb703' },
+    { id: 2, name: 'Golden Crispy Fries', desc: 'Hand-cut potatoes, perfectly salted and fried to golden perfection.', price: 2.99, emoji: '🍟', tag: 'Classic', bg: '#fb8500' },
+    { id: 3, name: 'Spicy Chicken Wings', desc: 'Crispy wings tossed in our signature hot sauce. 6 pieces.', price: 7.99, emoji: '🍗', tag: 'Spicy', bg: '#e63946' },
+    { id: 4, name: 'Pepperoni Pizza Slice', desc: 'Fresh-baked slice with melted mozzarella and spicy pepperoni.', price: 4.99, emoji: '🍕', tag: 'Hot', bg: '#ffb703' },
+    { id: 5, name: 'Chocolate Milkshake', desc: 'Creamy vanilla ice cream blended with rich chocolate and whipped cream.', price: 3.99, emoji: '🥤', tag: 'Sweet', bg: '#fb8500' }
+  ];
+
+  let cart = [];
+  let currentTab = 'menu';
+  let currentUser = null;
+  let authMode = 'login';
+
+  const menuGrid = document.getElementById('menuGrid');
+  const cartContainer = document.getElementById('cartContainer');
+  const cartBadge = document.getElementById('cartBadge');
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  const loginOverlay = document.getElementById('loginOverlay');
+  const loginClose = document.getElementById('loginClose');
+  const userBtn = document.getElementById('userBtn');
+  const userAvatar = document.getElementById('userAvatar');
+  const userLabel = document.getElementById('userLabel');
+  const authForm = document.getElementById('authForm');
+  const formError = document.getElementById('formError');
+  const nameGroup = document.getElementById('nameGroup');
+  const rememberRow = document.getElementById('rememberRow');
+  const submitBtn = document.getElementById('submitBtn');
+  const loginSubtitle = document.getElementById('loginSubtitle');
+
+  // Render menu
+  function renderMenu() {
+    menuGrid.innerHTML = menuItems.map(item => `
+      <div class="food-card">
+        <div class="food-image" style="--img-bg: ${item.bg}">
+          <span class="food-tag">${item.tag}</span>
+          <span>${item.emoji}</span>
+        </div>
+        <div class="food-info">
+          <h3 class="food-name">${item.name}</h3>
+          <p class="food-desc">${item.desc}</p>
+          <div class="food-footer">
+            <div class="food-price">$${item.price.toFixed(2)}</div>
+            <button class="add-btn" onclick="addToCart(${item.id})">
+              <span>+</span> Add
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function addToCart(id) {
+    const item = menuItems.find(i => i.id === id);
+    const existing = cart.find(c => c.id === id);
+    if (existing) existing.qty++;
+    else cart.push({ ...item, qty: 1 });
+    updateCartBadge();
+    showToast(`${item.name} added!`);
+    if (currentTab === 'cart') renderCart();
+  }
+
+  function updateQty(id, delta) {
+    const item = cart.find(c => c.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+    updateCartBadge();
+    renderCart();
+  }
+
+  function removeItem(id) {
+    cart = cart.filter(c => c.id !== id);
+    updateCartBadge();
+    renderCart();
+  }
+
+  function updateCartBadge() {
+    const total = cart.reduce((sum, item) => sum + item.qty, 0);
+    cartBadge.textContent = total;
+    cartBadge.classList.remove('bump');
+    void cartBadge.offsetWidth;
+    cartBadge.classList.add('bump');
+  }
+
+  function renderCart() {
+    if (cart.length === 0) {
+      cartContainer.innerHTML = `
+        <div class="cart-empty">
+          <div class="cart-empty-icon">🛒</div>
+          <h3>Your cart is empty</h3>
+          <p>Add some delicious items from the menu!</p>
+        </div>`;
+      return;
+    }
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const tax = subtotal * 0.08;
+    const total = subtotal + tax;
+    cartContainer.innerHTML = `
+      <div>
+        ${cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-image">${item.emoji}</div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+            </div>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
+              <span class="qty-value">${item.qty}</span>
+              <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${item.id})" title="Remove">🗑️</button>
+          </div>`).join('')}
+      </div>
+      <div class="cart-summary">
+        <div class="summary-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+        <div class="summary-row"><span>Tax (8%)</span><span>$${tax.toFixed(2)}</span></div>
+        <div class="summary-row total"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+        <button class="checkout-btn" onclick="checkout()">Checkout → $${total.toFixed(2)}</button>
+      </div>`;
+  }
+
+  function checkout() {
+    if (!currentUser) {
+      showToast('Please sign in to checkout');
+      openLogin();
+      return;
+    }
+    showToast('Order placed! 🎉');
+    cart = [];
+    updateCartBadge();
+    renderCart();
+    setTimeout(() => switchTab('menu'), 1200);
+  }
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // Tab switching
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
+    document.getElementById('menuSection').classList.toggle('hidden', tab !== 'menu');
+    document.getElementById('cartSection').classList.toggle('hidden', tab !== 'cart');
+    if (tab === 'cart') renderCart();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  // Login Modal
+  function openLogin() {
+    loginOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLogin() {
+    loginOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+    formError.classList.remove('show');
+    authForm.reset();
+  }
+
+  userBtn.addEventListener('click', () => {
+    if (currentUser) {
+      // Logout
+      const name = currentUser.name;
+      currentUser = null;
+      updateUserUI();
+      showToast(`Goodbye, ${name}! 👋`);
+    } else {
+      openLogin();
+    }
+  });
+
+  loginClose.addEventListener('click', closeLogin);
+  loginOverlay.addEventListener('click', (e) => {
+    if (e.target === loginOverlay) closeLogin();
+  });
+
+  // Auth mode switching
+  document.querySelectorAll('.login-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      authMode = tab.dataset.mode;
+      document.querySelectorAll('.login-tab').forEach(t => t.classList.toggle('active', t === tab));
+      nameGroup.classList.toggle('hidden', authMode !== 'signup');
+      rememberRow.classList.toggle('hidden', authMode === 'signup');
+      submitBtn.textContent = authMode === 'login' ? 'Sign In' : 'Create Account';
+      loginSubtitle.textContent = authMode === 'login' ? 'Sign in to continue your feast' : 'Join the Burger Blitz family';
+      document.querySelector('.login-header h2').innerHTML = authMode === 'login' 
+        ? 'Welcome <span>Back</span>' 
+        : 'Get <span>Started</span>';
+      formError.classList.remove('show');
+    });
+  });
+
+  // Form submission
+  authForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const name = document.getElementById('nameInput').value.trim();
+
+    // Validation
+    if (!email || !password) {
+      showError('Please fill in all required fields');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('Please enter a valid email address');
+      return;
+    }
+    if (password.length < 6) {
+      showError('Password must be at least 6 characters');
+      return;
+    }
+    if (authMode === 'signup' && !name) {
+      showError('Please enter your name');
+      return;
+    }
+
+    // Simulate login
+    const userName = authMode === 'signup' ? name : email.split('@')[0];
+    currentUser = { name: userName, email: email };
+    updateUserUI();
+    closeLogin();
+    showToast(authMode === 'login' ? `Welcome back, ${userName}! 🎉` : `Account created! Hi, ${userName}! 🎉`);
+  });
+
+  function showError(msg) {
+    formError.textContent = msg;
+    formError.classList.add('show');
+  }
+
+  function socialLogin(provider) {
+    currentUser = { name: `${provider} User`, email: `user@${provider.toLowerCase()}.com` };
+    updateUserUI();
+    closeLogin();
+    showToast(`Signed in with ${provider}! 🎉`);
+  }
+
+  function updateUserUI() {
+    if (currentUser) {
+      const initial = currentUser.name.charAt(0).toUpperCase();
+      userAvatar.textContent = initial;
+      userLabel.textContent = currentUser.name.split(' ')[0];
+    } else {
+      userAvatar.textContent = '👤';
+      userLabel.textContent = 'Sign In';
+    }
+  }
+
+  // Escape key closes modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && loginOverlay.classList.contains('active')) {
+      closeLogin();
+    }
+  });
+
+  // Init
+  renderMenu();
+  renderCart();
+</script>
+
+</body>
+</html>
